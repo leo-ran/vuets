@@ -2,7 +2,7 @@ import { Vue, Component,Prop, Model, Watch } from '@vuets/class'
 
 
 interface PropTypes {
-    type?: 'success' | 'danger' | 'primary'
+    type?: 'success' | 'danger' | 'primary'
     size?: number;
 }
 

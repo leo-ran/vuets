@@ -48,18 +48,16 @@
     "webpack-hot-middleware": "^2.22.3"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0-rc.1",
+    "@babel/polyfill": "^7.0.0-rc.3",
     "@types/node": "^10.7.1",
     "@vuets/class": "^1.0.0-beta.1",
     "reflect-metadata": "^0.1.12",
     "vue": "^2.5.17",
     "vue-class-component": "^6.2.0",
-    "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
   "browserslist": [
-    "last 2 version",
-    "ie 9-11"
+    "last 2 version"
   ]
 }

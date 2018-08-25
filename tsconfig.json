@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
+        "target": "es5",
+        "module": "esnext",
         "strict": true,
         "jsx": "preserve",
         "importHelpers": true,
@@ -13,7 +13,6 @@
         "sourceMap": true,
         "declaration": true,
         "baseUrl": ".",
-        "outDir": "output",
         "types": [
             "node"
         ],
@@ -23,7 +22,7 @@
             ]
         },
         "lib": [
-            "es6",
+            "esnext",
             "dom",
             "dom.iterable",
             "scripthost"

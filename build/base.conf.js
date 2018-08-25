@@ -11,12 +11,15 @@ const renderer = {
     entry: {
         app: path.resolve('src', 'main.ts')
     },
+    node: {
+        fs: 'empty'
+    },
     module: {
         rules: [
             {
                 test: /\.vue$/,
-                include: path.resolve('src'),
-                exclude: /node_modules/,
+                // include: path.resolve('src'),
+                // exclude: /node_modules/,
                 use: [{
                     loader: 'vue-loader',
                     options:{
@@ -27,13 +30,13 @@ const renderer = {
             {
                 test: /\.(js|jsx)$/,
                 use: 'babel-loader',
-                exclude: /node_modules/,
-                include: path.resolve('src')
+                // exclude: /node_modules/,
+                // include: path.resolve('src')
             },
             {
                 test: /\.tsx$/,
-                exclude: /node_modules/,
-                include: path.resolve('src'),
+                // exclude: /node_modules/,
+                // include: path.resolve('src'),
                 use: ['babel-loader',{
                     loader:'ts-loader',
                     options: {
@@ -43,14 +46,14 @@ const renderer = {
             },
             {
                 test:/\.ts$/,
-                exclude: /node_modules/,
-                include: path.resolve('src'),
-                use: {
+                // exclude: /node_modules/,
+                // include: path.resolve('src'),
+                use: ['babel-loader',{
                     loader:'ts-loader',
                     options: {
                         appendTsSuffixTo: [/\.vue$/]
                     }
-                }
+                }]
             },
             {
                 test: /\.(c|s|le)ss$/,
@@ -111,7 +114,7 @@ const renderer = {
     output: {
         path: path.resolve('dist'),
         filename: `[name].js`,
-        libraryTarget: 'umd'
+        // libraryTarget: 'umd'
     },
     optimization: {
         minimize: process.env.NODE_ENV == 'production' ? true : false,

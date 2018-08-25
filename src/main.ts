@@ -1,4 +1,5 @@
 import Vue, { CreateElement } from 'vue'
+import '@babel/polyfill'
 
 import App from './App'
 
