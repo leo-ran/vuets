@@ -1,0 +1,22 @@
+{
+  "name": "@vuets/class",
+  "version": "1.0.0-beta.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vue-typescript",
+    "typescript-vue",
+    "vue-ts",
+    "vue-jsx",
+    "vue-tsx"
+  ],
+  "author": "ranyunlong",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^2.5.17",
+    "vue-class-component": "^6.2.0"
+  }
+}
