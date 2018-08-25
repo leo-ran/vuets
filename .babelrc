@@ -1,0 +1,13 @@
+{
+    "plugins": [
+        "transform-vue-jsx",
+        "dynamic-import-node",
+        "@babel/transform-runtime"
+    ],
+    "presets": [
+        ["@babel/env", {
+            "exclude": ["babel-plugin-transform-classes"]
+        }],
+        "@babel/typescript"
+    ]
+}
