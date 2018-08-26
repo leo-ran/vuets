@@ -1,17 +1,27 @@
-import { Button } from '@/components/Button'
-import {Component, Vue, CreateElement  } from '@vuets/class'
+import { Component, Vue, Emit, Inject  } from '@vuets/class'
 
-interface PropTypes {
-    title?: string;
-}
 
 @Component
-export default class extends Vue<PropTypes> {
+export default class extends Vue {
+    @Inject({from: 'title', default: 'title'}) public title!: string;
+    @Inject({from: 'bar', default: 'bar' }) public title2!: string;
+    public c: number = 100;
     private render() {
         return (
-            <div id="xx">
-               <Button type="success" />
+            <div onClick={() => { this.click(100) }}>
+                test
+                <br/>
+                {this.title}
+                <br/>
+                {this.title2}
             </div>
         )
+    }
+    @Emit('click')
+    private click(n: number): void {
+        // console.log(this)
+    }
+    private created() {
+        console.log(this)
     }
 }

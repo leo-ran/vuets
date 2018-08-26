@@ -32,7 +32,12 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "no-consecutive-blank-lines": false,
+    "ban-types":false,
     "semicolon":false,
-    "trailing-comma":false
+    "trailing-comma":false,
+    "callable-types":false,
+    "only-arrow-functions":false,
+    "no-console":false,
+    "max-line-length":false
   }
 }
