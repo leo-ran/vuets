@@ -27,7 +27,6 @@
     ],
     "use-isnan": true,
     "align": true,
-    "no-boolean-literal-compare": true,
     "eofline":false,
     "interface-name": false,
     "ordered-imports": false,

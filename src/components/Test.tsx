@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button'
-import {Component, Vue  } from '@vuets/class'
+import {Component, Vue, CreateElement  } from '@vuets/class'
 
 interface PropTypes {
     title?: string;

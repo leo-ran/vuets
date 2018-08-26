@@ -1,5 +1,5 @@
 import Test from '@/components/Test'
-import { Component, Vue  } from '@vuets/class'
+import { Component, Vue, CreateElement  } from '@vuets/class'
 
 
 @Component
