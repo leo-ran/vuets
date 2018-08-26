@@ -1,10 +1,10 @@
-import { Vue ,Component } from '@vuets/class'
 import Test from '@/components/Test'
-import { CreateElement } from 'vue';
+import { Component, Vue  } from '@vuets/class'
+
 
 @Component
 export default class extends Vue {
-    private render(h: CreateElement) { 
+    private render() {
         return (
             <div>
                 <Test/>

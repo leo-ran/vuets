@@ -1,20 +1,17 @@
-import { Vue ,Component, Prop } from '@vuets/class'
-import { Button } from '@/components/Button';
-import { CreateElement } from 'vue';
+import { Button } from '@/components/Button'
+import {Component, Vue  } from '@vuets/class'
 
 interface PropTypes {
-    title?:string;
+    title?: string;
 }
 
 @Component
 export default class extends Vue<PropTypes> {
-    render(h: CreateElement) {
+    private render() {
         return (
             <div id="xx">
                <Button type="success" />
             </div>
         )
     }
-    
 }
-

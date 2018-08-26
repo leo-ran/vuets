@@ -18,42 +18,45 @@ const renderer = {
         rules: [
             {
                 test: /\.vue$/,
-                // include: path.resolve('src'),
-                // exclude: /node_modules/,
+                include: path.resolve('src'),
+                exclude: /node_modules/,
                 use: [{
                     loader: 'vue-loader',
-                    options:{
+                    options: {
                         extractCSS: true
                     }
                 }]
             },
             {
                 test: /\.(js|jsx)$/,
-                use: 'babel-loader',
-                // exclude: /node_modules/,
-                // include: path.resolve('src')
+                use: 'babel-loader'
             },
             {
                 test: /\.tsx$/,
-                // exclude: /node_modules/,
-                // include: path.resolve('src'),
-                use: ['babel-loader',{
-                    loader:'ts-loader',
+                exclude: /node_modules/,
+                include: path.resolve('src'),
+                use: ['babel-loader', {
+                    loader: 'ts-loader',
                     options: {
                         appendTsxSuffixTo: [/\.vue$/]
                     }
                 }]
+
             },
             {
-                test:/\.ts$/,
-                // exclude: /node_modules/,
-                // include: path.resolve('src'),
-                use: ['babel-loader',{
-                    loader:'ts-loader',
+                test: /\.ts$/,
+                exclude: /node_modules/,
+                include: path.resolve('src'),
+                use: ['babel-loader', {
+                    loader: 'ts-loader',
                     options: {
                         appendTsSuffixTo: [/\.vue$/]
                     }
                 }]
+            },
+            {
+                test: /\.(ts|tsx)$/,
+                use: 'tslint-loader'
             },
             {
                 test: /\.(c|s|le)ss$/,
@@ -62,12 +65,12 @@ const renderer = {
                     'css-loader',
                     'postcss-loader',
                     'less-loader'
-                ]:[
-                    'style-loader',
-                    'css-loader',
-                    'postcss-loader',
-                    'less-loader'
-                ]
+                ] : [
+                        'style-loader',
+                        'css-loader',
+                        'postcss-loader',
+                        'less-loader'
+                    ]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -107,9 +110,9 @@ const renderer = {
         alias: {
             '@': path.resolve('src'),
             'vue$': 'vue/dist/vue.esm.js',
-            'babel-core': path.resolve('node_modules','@babel','core')
+            'babel-core': path.resolve('node_modules', '@babel', 'core')
         },
-        extensions: ['.js', '.jsx','.ts', '.tsx' , '.vue', '.json', '.css', '.sss', '.node']
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.json', '.css', '.sss', '.node']
     },
     output: {
         path: path.resolve('dist'),

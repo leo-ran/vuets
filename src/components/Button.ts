@@ -1,4 +1,4 @@
-import { Vue, Component,Prop, Model, Watch } from '@vuets/class'
+import { Component, Model, Prop, Vue, Watch } from '@vuets/class'
 
 
 interface PropTypes {
@@ -11,12 +11,12 @@ interface PropTypes {
         <button @click="state=!state">按钮一枚{{size}} {{state}}{{type}}</button>
     `
 })
-export class Button extends Vue<PropTypes>{
-    @Prop({type: Number, default:100}) size!:number;
-    @Model('update',String) type!: 'success' | 'danger' | 'primary';
-    public state:boolean = false;
-    @Watch('state') 
-    watcherState(n:boolean, o:boolean): void{
-        console.log(this.state)
+export class Button extends Vue<PropTypes> {
+    @Prop({ type: Number, default: 100 }) public size!: number;
+    @Model('update', String) public type!: 'success' | 'danger' | 'primary';
+    public state: boolean = false;
+    @Watch('state')
+    public watcherState(n: boolean, o: boolean): void {
+        // console.log(this.state)
     }
 }

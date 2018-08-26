@@ -25,8 +25,7 @@ const server = new WebpackDevServer(
             assets:true,
             colors:true,
             chunks:false,
-            modules:false,
-            warnings:false
+            modules:false
         },
         before (app, ctx) {
             app.use(webpackHotMiddleware(compiler,{
