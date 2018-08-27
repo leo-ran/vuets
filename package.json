@@ -1,6 +1,6 @@
 {
   "name": "@vuets/class",
-  "version": "1.0.0",
+  "version": "1.1.0-rc1",
   "description": "typescript vue classes",
   "main": "dist/index.js",
   "typings": "types/index.d.ts",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "github",
-    "url": "https://github.com/ranyunlong/vuets.git"
+    "url": "https://github.com/ranyunlong/vuets/tree/class"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

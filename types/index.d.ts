@@ -1,3 +1,9 @@
+/*!
+ * @vuets/class 
+ * (c) 2018 Ranyunlong
+ * Released under the MIT License.
+ */
+
 import VueClass from 'vue';
 import ComponentDecorator, { VueDecorator } from 'vue-class-component';
 import { PropOptions, WatchOptions, InjectKey } from 'vue/types/options';
@@ -15,10 +21,6 @@ import './jsx'
  *  @Prop({type: Number, required:true}) age!:number;
  * }
  * ```
- *
- * @param propType
- * @author YunlongRan<549510622@qq.com>
- * @license MIT
  */
 export declare const Prop: <V extends VueClass>(propType?: PropOptions<any> | (() => any) | (new (...args: any[]) => any) | import("vue/types/options").Prop<any>[] | undefined) => VueDecorator;
 /**
@@ -31,10 +33,6 @@ export declare const Prop: <V extends VueClass>(propType?: PropOptions<any> | ((
  *   @Model('update',String) type!: string;
  * }
  * ```
- * @param event
- * @param propType
- * @author YunlongRan<549510622@qq.com>
- * @license MIT
  */
 export declare const Model: <V extends VueClass>(event?: string | undefined, propType?: PropOptions<any> | (() => any) | (new (...args: any[]) => any) | import("vue/types/options").Prop<any>[] | undefined) => VueDecorator;
 /**
@@ -102,7 +100,7 @@ export declare const Component: typeof ComponentDecorator;
  * ```
  */
 declare class VueComponentClass<T = any> extends VueClass {
-    private readonly propTypes;
+    private readonly propTypes: T;
  }
 export declare const Vue: typeof VueComponentClass;
 export { VueClass };

@@ -4,3 +4,5 @@ ts/
 *.lock
 gulpfile.js
 .gitignore
+tsconfig.json
+.vscode/

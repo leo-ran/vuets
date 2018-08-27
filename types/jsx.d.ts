@@ -1,6 +1,5 @@
 import { VNode } from 'vue'
 
-
 import { HTMLElements, BaseElement } from './HTMLElements'
 declare global {
     namespace JSX {

@@ -1,3 +1,9 @@
+/*!
+ * @vuets/class 
+ * (c) 2018 Ranyunlong
+ * Released under the MIT License.
+ */
+
 export interface BaseEvent {
     onAbort?: (ev: UIEvent) => any;
     onaActivate?: (ev: Event) => any;
