@@ -91,6 +91,7 @@ interface BaseElement extends BaseEvent {
     spellcheck?: boolean | 'true';
     tabindex?: number | string;
     title?: string;
+    [key:string]: any;
 }
 
 type Dropzone = 'copy' | 'move' | 'link'
