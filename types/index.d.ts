@@ -1,109 +1,105 @@
-/*!
- * @vuets/class 
- * (c) 2018 Ranyunlong
- * Released under the MIT License.
- */
-
-import VueClass from 'vue';
-import ComponentDecorator, { VueDecorator } from 'vue-class-component';
-import { PropOptions, WatchOptions, InjectKey } from 'vue/types/options';
-import './jsx'
-
+import { VueDecorator } from 'vue-class-component';
+interface VueXDecorator {
+    (key: string): VueDecorator;
+}
 /**
- * PropDecorator
+ * Getter Decorator
  *
  * Example
  * ```
- * import { Vue, Prop } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *  @Prop({type: Number, default:100}) size!:number;
- *  @Prop(Number) size!:number;
- *  @Prop({type: Number, required:true}) age!:number;
- * }
- * ```
- */
-export declare const Prop: <V extends VueClass>(propType?: PropOptions<any> | (() => any) | (new (...args: any[]) => any) | import("vue/types/options").Prop<any>[] | undefined) => VueDecorator;
-/**
- * ModelDecorator
- *
- * Example
- * ```
- * import { Vue, Model } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *   @Model('update',String) type!: string;
- * }
- * ```
- */
-export declare const Model: <V extends VueClass>(event?: string | undefined, propType?: PropOptions<any> | (() => any) | (new (...args: any[]) => any) | import("vue/types/options").Prop<any>[] | undefined) => VueDecorator;
-/**
- * WatchDecorator
- *
- * Example
- * ```
- * import { Vue, Watch } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *  public a:boolean = false;
- *  @Watch('a' ,{ deep:true })
- *  watcherA(): void{
- *      console.log(this.a)
+ * import { Component, Vue, Prop  } from '@vuets/class'
+ * import { Getter, NameSpace } from '@vuets/vuex';
+ * const adminModule = NameSpace('admin')
+ * export class Card extends Vue {
+ *  @Getter('username') public myUser!: string;
+ *  @adminModule.Getter('admin') myAdmin!: string;
+ *  private render() {
+ *    <div>
+ *       {this.myUser}
+ *       {this.myAdmin}
+ *    </div>
  *  }
  * }
  * ```
  */
-export declare const Watch: <V extends VueClass>(watchKey: string, option?: WatchOptions | undefined) => VueDecorator;
+export declare const Getter: VueXDecorator;
 /**
- * Example
- * ```
- * import { Vue, Emit } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *   pulic data !:number;
- *   @Emit('click')
- *   handler(n){
- *      data = n
- *   }
- * }
- * ```
- */
-export declare const Emit: <V extends VueClass>(event: string) => MethodDecorator;
-/**
- * Example
- * ```
- * import { Vue, Provide } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *    @Provide() title:string = 100;
- * }
- * ```
- */
-export declare const Provide: <V extends VueClass>(propertyKey?: string | symbol | undefined) => VueDecorator;
-interface InjectOptions {
-    from?: InjectKey;
-    default?: any;
-}
-/**
- * Example
+ * State Decorator
  *
+ * Example
  * ```
- * import { Vue, Inject } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *  @Inject() title!:string;
- *  @Inject('test') a!:any;
- *  @Inject({from:'id', default:10 }) id:number;
+ * import { Component, Vue, Prop  } from '@vuets/class'
+ * import { State, NameSpace } from '@vuets/vuex';
+ * const adminModule = NameSpace('admin')
+ * export class Card extends Vue {
+ *  @State('username') public myUser!: string;
+ *  @adminModule.State('admin') myAdmin!: string;
+ *  private render() {
+ *    <div>
+ *       {this.myUser}
+ *       {this.myAdmin}
+ *    </div>
+ *  }
  * }
  * ```
  */
-export declare const Inject: <V extends VueClass>(options?: string | symbol | InjectOptions | undefined) => VueDecorator;
-export declare const Component: typeof ComponentDecorator;
-/*
+export declare const State: VueXDecorator;
+/**
+ * Mutation Decorator
+ *
  * Example
  * ```
- * export default class extends Vue<PropTypes>{}
+ * import { Component, Vue, Prop  } from '@vuets/class'
+ * import { Mutation, NameSpace } from '@vuets/vuex';
+ * const adminModule = NameSpace('admin')
+ * export class Card extends Vue {
+ *  @Getter('username') public myUser!: string;
+ *  @Mutation('changeUsername') public usernameChange!: Function;
+ *  @adminModule.Getter('admin') myAdmin!: string;
+ *  @adminModule.Mutation('changeAdmin') public adminChange!: Function;
+ *  private render() {
+ *    <div>
+ *       {this.myUser}
+ *       {this.myAdmin}
+ *       <button onClick={this.usernameChange('John')}>change username</button>
+ *       <button onClick={this.adminChange('root')}>change admin</button>
+ *    </div>
+ *  }
+ * }
  * ```
  */
-declare class VueComponentClass<T = any> extends VueClass {
-    private readonly propTypes: T;
- }
-export declare const Vue: typeof VueComponentClass;
-export { VueClass };
-export declare const registerHooks: typeof ComponentDecorator.registerHooks;
-export { mixins, createDecorator } from 'vue-class-component';
-export { Component as VueComponent, CreateElement, VueConstructor, AsyncComponent, ComponentOptions, FunctionalComponentOptions, RenderContext, PropOptions, ComputedOptions, WatchHandler, WatchOptions, WatchOptionsWithHandler, DirectiveFunction, DirectiveOptions, PluginFunction, PluginObject, VNodeChildren, VNodeChildrenArrayContents, VNode, VNodeComponentOptions, VNodeData, VNodeDirective } from 'vue';
+export declare const Mutation: VueXDecorator;
+/**
+ * Action Decorator
+ *
+ * Example
+ * ```
+ * import { Component, Vue, Prop  } from '@vuets/class'
+ * import { Action, NameSpace } from '@vuets/vuex';
+ * const adminModule = NameSpace('admin')
+ * export class Card extends Vue {
+ *  @Getter('username') public myUser!: string;
+ *  @Action('changeUsername') public usernameChange!: Function;
+ *  @adminModule.Getter('admin') myAdmin!: string;
+ *  @adminModule.Action('changeAdmin') public adminChange!: Function;
+ *  private render() {
+ *    <div>
+ *       {this.myUser}
+ *       {this.myAdmin}
+ *       <button onClick={this.usernameChange('John')}>change username</button>
+ *       <button onClick={this.adminChange('root')}>change admin</button>
+ *    </div>
+ *  }
+ * }
+ * ```
+ */
+export declare const Action: VueXDecorator;
+interface NameSpace {
+    Getter: VueXDecorator;
+    Mutation: VueXDecorator;
+    Action: VueXDecorator;
+    State: VueXDecorator;
+}
+export declare const NameSpace: (moduleName: string) => NameSpace;
+export {};
+//# sourceMappingURL=index.d.ts.map

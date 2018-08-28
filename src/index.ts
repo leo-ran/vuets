@@ -1,238 +1,188 @@
 /*!
- * @vuets/class 
+ * @vuets/vuex 
  * (c) 2018 Ranyunlong <549510622@qq.com>
  * Released under the MIT License.
  */
 
-import VueClass from 'vue'
-import ComponentDecorator, { createDecorator, VueDecorator } from 'vue-class-component'
-import { PropOptions, PropValidator, WatchHandler, ComponentOptions, WatchOptions, InjectKey } from 'vue/types/options';
+import Vue, { ComponentOptions } from 'vue'
+import Vuex from 'vuex'
+import { createDecorator, VueDecorator } from 'vue-class-component'
 
-/**
- * PropDecorator
- *
- * Example
- * ```
- * import { Vue, Prop } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *  @Prop({type: Number, default:100}) size!:number;
- *  @Prop(Number) size!:number;
- *  @Prop({type: Number, required:true}) age!:number;
- * }
- * ```
- *
- * @param propType
- * @author YunlongRan<549510622@qq.com>
- * @license MIT
- */
-export const Prop = <V extends VueClass>(propType?: PropValidator<Record<string, any> & any>): VueDecorator => {
-    return createDecorator((options: ComponentOptions<V>, key: string) => {
-        const props: { [key: string]: any } = {}
-        options.props = options.props || props
-        options.props[key] = propType as PropValidator<Record<string, any>>
-    })
+Vue.use(Vuex)
+
+interface VueXDecorator {
+    (key: string): VueDecorator;
 }
 
-/**
- * ModelDecorator
- * Example
- * ```
- * import { Vue, Model } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *   @Model('update',String) type!: string;
- * }
- * ```
- * @param event
- * @param propType
- * @author YunlongRan<549510622@qq.com>
- * @license MIT
- */
-export const Model = <V extends VueClass>(event?: string, propType?: PropValidator<Record<string, any> & any>): VueDecorator => {
-    return createDecorator((options: ComponentOptions<VueClass>, key: string) => {
-        // add model
-        options.model = options.model || {}
-        options.model.event = event
-        options.model.prop = key
-
-        // add props
-        const props: { [key: string]: any } = {}
-        options.props = options.props || props
-        options.props[key] = propType as PropValidator<Record<string, any>>
-    })
-}
-
-/**
- * WatchDecorator
- *
- * Example
- * ```
- * import { Vue, Watch } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *  public a:boolean = false;
- *  @Watch('a' ,{ deep:true })
- *  watcherA(): void{
- *      console.log(this.a)
- *  }
- * }
- * ```
- */
-export const Watch = <V extends VueClass>(watchKey: string, option?: WatchOptions): VueDecorator => {
-    return createDecorator((options: ComponentOptions<V>, key: any) => {
-        options.watch = options.watch || {}
-        if (option as WatchOptions) {
-            options.watch[watchKey] = {
-                handler(this: any, n: any, o: any) {
-                    (this[key] as WatchHandler<any>)(n, o)
-                },
-                ...option as WatchOptions
+const createVuexDecorator = (mixinTo: 'computed' | 'methods', type: 'getter' | 'action' | 'mutation' | 'state', namespace?: string): VueXDecorator => {
+    return <V extends Vue>(key: string): VueDecorator => {
+        return createDecorator((options: ComponentOptions<V>, propertyKey: string) => {
+            if (mixinTo === 'computed') {
+                const computed: { [key: string]: any } = { }
+                options.computed = options.computed || computed
+                options.computed[propertyKey] = function(this: V) {
+                    if (typeof key !== 'string') { return }
+                    // Getter handler
+                    if (namespace as string) {
+                        if (!/\/$/.test(namespace as string)) {
+                            namespace += '/'
+                        }
+                        if (type === 'getter') {
+                            return this.$store.getters[namespace + key]
+                        } else if (type === 'state') {
+                            const namespaces: string[] = (namespace as string).split('/').filter((v: string) => {
+                                return v.length > 0
+                            })
+                            let value = this.$store.state
+                            namespaces.forEach( (namespacesKey: string) => {
+                                value = value[namespacesKey]
+                            })
+                            return value[key]
+                        }
+                    }
+                    if (type === 'getter') {
+                        return this.$store.getters[key]
+                    } else if (type === 'state') {
+                        return this.$store.state[key]
+                    }
+                }
             }
-        } else {
-            options.watch[watchKey] = function(this: any, n: any, o: any) {
-                (this[key] as WatchHandler<any>)(n, o)
+            if (mixinTo === 'methods') {
+                const methods: { [key: string]: () => void  } = { }
+                options.methods = options.methods || methods
+                options.methods[propertyKey] = function(this: V, ...args: any[]) {
+                    if (typeof key !== 'string') { return }
+                    if (namespace as string) {
+                        if (!/\/$/.test(namespace as string)) {
+                            namespace += '/'
+                        }
+                        if (type === 'mutation') {
+                            this.$store.commit(namespace + key, ...args)
+                        } else if (type === 'action') {
+                            this.$store.dispatch(namespace + key, ...args)
+                        }
+                    } else {
+                        if (type === 'mutation') {
+                            this.$store.commit(key, ...args)
+                        } else if (type === 'action') {
+                            this.$store.dispatch(key, ...args)
+                        }
+                    }
+                }
             }
-        }
-    })
-}
-
-
-interface Decorator<V extends VueClass> {
-    (target: V | any, key: PropertyKey, descriptor: TypedPropertyDescriptor<Function>): void;
-}
-
-/**
- * Example
- * ```
- * import { Vue, Emit } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *   pulic data !:number;
- *   @Emit('click')
- *   handler(n){
- *      data = n
- *   }
- * }
- * ```
- */
-export const Emit = <V extends VueClass>(event: string): MethodDecorator => {
-    return (target: V | any, key: string | symbol, descriptor: TypedPropertyDescriptor<any>): void => {
-        const fn = descriptor.value
-        descriptor.value = function(this: V, ...args: any[]) {
-            if (typeof fn === 'function') {
-                (fn as Function).apply(this, args)
-                this.$emit(event, ...args)
-            }
-        }
+        })
     }
 }
 
 /**
+ * Getter Decorator
+ *
  * Example
  * ```
- * import { Vue, Provide } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *    @Provide() title:string = 100;
+ * import { Component, Vue, Prop  } from '@vuets/class'
+ * import { Getter, NameSpace } from '@vuets/vuex';
+ * const adminModule = NameSpace('admin')
+ * export class Card extends Vue {
+ *  @Getter('username') public myUser!: string;
+ *  @adminModule.Getter('admin') myAdmin!: string;
+ *  private render() {
+ *    <div>
+ *       {this.myUser}
+ *       {this.myAdmin}
+ *    </div>
+ *  }
  * }
  * ```
  */
-export const Provide = <V extends VueClass>(propertyKey?: string | symbol): VueDecorator => {
-    return createDecorator((options: ComponentOptions<V>, key: string) => {
-        const provide: { merged?: { [index: string]: any } } | any = options.provide || {}
-        if (typeof provide !== 'function' || !provide.merged) {
-            const original: Function = options.provide as Function
-            const merged: { [index: string]: any } = provide.merged || {};
-                merged[key] = propertyKey || key
-            options.provide = function(this: V | any) {
-                let provides: { [index: string]: any } = {}
-                if (typeof original === 'function') {
-                    provides = { ...original.call(this) }
-                }
-                Object.keys(merged).forEach((k: string) => {
-                    provides[merged[k]] = this[key]
-                })
-                return provides
-            }
-            provide.merged = {}
-        }
-    })
-}
-
-interface InjectOptions {
-    from?: InjectKey;
-    default?: any;
-}
+export const Getter = createVuexDecorator('computed', 'getter')
 
 
 /**
+ * State Decorator
+ *
  * Example
  * ```
- * import { Vue, Inject } from '@vuets/class'
- * export default class extends Vue<PropTypes>{
- *  @Inject() title!:string;
- *  @Inject('test') a!:any;
- *  @Inject({from:'id', default:10 }) id:number;
+ * import { Component, Vue, Prop  } from '@vuets/class'
+ * import { State, NameSpace } from '@vuets/vuex';
+ * const adminModule = NameSpace('admin')
+ * export class Card extends Vue {
+ *  @State('username') public myUser!: string;
+ *  @adminModule.State('admin') myAdmin!: string;
+ *  private render() {
+ *    <div>
+ *       {this.myUser}
+ *       {this.myAdmin}
+ *    </div>
+ *  }
+ * }
+ * ```
+ * ```
+ */
+export const State = createVuexDecorator('computed', 'state')
+
+/**
+ * Mutation Decorator
+ *
+ * Example
+ * ```
+ * import { Component, Vue, Prop  } from '@vuets/class'
+ * import { Mutation, NameSpace } from '@vuets/vuex';
+ * const adminModule = NameSpace('admin')
+ * export class Card extends Vue {
+ *  @Getter('username') public myUser!: string;
+ *  @Mutation('changeUsername') public usernameChange!: Function;
+ *  @adminModule.Getter('admin') myAdmin!: string;
+ *  @adminModule.Mutation('changeAdmin') public adminChange!: Function;
+ *  private render() {
+ *    <div>
+ *       {this.myUser}
+ *       {this.myAdmin}
+ *       <button onClick={this.usernameChange('John')}>change username</button>
+ *       <button onClick={this.adminChange('root')}>change admin</button>
+ *    </div>
+ *  }
  * }
  * ```
  */
-export const Inject = <V extends VueClass>(option?: InjectOptions | InjectKey): VueDecorator => {
-    return createDecorator((options: ComponentOptions<V>, key: string) => {
-        if (!options.inject) {
-            options.inject = {}
-        }
-        if (!Array.isArray(options.inject)) {
-            (options.inject as { [i: string]: any })[key] = option || key
-        } else {
-            (options.inject as Array<InjectOptions | InjectKey>).push(option || key)
-        }
-    })
-}
-
+export const Mutation = createVuexDecorator('methods', 'getter')
 
 /**
+ * Action Decorator
+ *
  * Example
  * ```
- * import { Vue } from '@vuets/class'
- * export default class extends Vue<PropTypes>{}
+ * import { Component, Vue, Prop  } from '@vuets/class'
+ * import { Action, NameSpace } from '@vuets/vuex';
+ * const adminModule = NameSpace('admin')
+ * export class Card extends Vue {
+ *  @Getter('username') public myUser!: string;
+ *  @Action('changeUsername') public usernameChange!: Function;
+ *  @adminModule.Getter('admin') myAdmin!: string;
+ *  @adminModule.Action('changeAdmin') public adminChange!: Function;
+ *  private render() {
+ *    <div>
+ *       {this.myUser}
+ *       {this.myAdmin}
+ *       <button onClick={this.usernameChange('John')}>change username</button>
+ *       <button onClick={this.adminChange('root')}>change admin</button>
+ *    </div>
+ *  }
+ * }
  * ```
  */
-class VueComponentClass<T = any> extends VueClass {
-    private readonly propTypes!: T;
+export const Action = createVuexDecorator('methods', 'action')
+
+interface NameSpace {
+    Getter: VueXDecorator;
+    Mutation: VueXDecorator;
+    Action: VueXDecorator;
+    State: VueXDecorator;
 }
-
-export const Component = ComponentDecorator
-
-export const Vue = VueClass
-
-export {
-    VueClass
+export const NameSpace = (moduleName: string): NameSpace => {
+    return {
+        Getter: createVuexDecorator('computed', 'getter', moduleName),
+        Mutation: createVuexDecorator('methods', 'mutation', moduleName),
+        Action: createVuexDecorator('methods', 'action', moduleName),
+        State: createVuexDecorator('computed', 'state', moduleName)
+    }
 }
-
-export const registerHooks = Component.registerHooks
-
-export {
-    mixins,
-    createDecorator
-} from 'vue-class-component'
-
-export {
-    Component as VueComponent,
-    CreateElement,
-    VueConstructor,
-    AsyncComponent,
-    ComponentOptions,
-    FunctionalComponentOptions,
-    RenderContext,
-    PropOptions,
-    ComputedOptions,
-    WatchHandler,
-    WatchOptions,
-    WatchOptionsWithHandler,
-    DirectiveFunction,
-    DirectiveOptions,
-    PluginFunction,
-    PluginObject,
-    VNodeChildren,
-    VNodeChildrenArrayContents,
-    VNode,
-    VNodeComponentOptions,
-    VNodeData,
-    VNodeDirective
-} from 'vue'

@@ -1,268 +1,176 @@
-# @vuets/class
+# @vuets/vuex
 
-This library fully depends on [vue-class-component](https://github.com/vuejs/vue-class-component) [vue](https://github.com/vuejs/vue) Part of the way to learn from [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator)
+This library fully depends on [vue-class-component](https://github.com/vuejs/vue-class-component) [vue](https://github.com/vuejs/vue);
 
-[![npm (scoped with tag)](https://img.shields.io/npm/v/@vuets/class/latest.svg)](https://www.npmjs.com/package/@vuets/class)
+[![npm (scoped with tag)](https://img.shields.io/npm/v/@vuets/vuex/latest.svg)](https://www.npmjs.com/package/@vuets/vuex)
 
-# Version 
-
-1. In vscode html5 tag autocomplate attribute 
-2. Autocomplate PropTypes hint
 
 # install
 
 ```shell
+npm i @vuets/vuex
+```
+If you need vue typescript see [@vuets/class](https://www.npmjs.com/package/@vuets/class) library;
+
+# Usage
+In this example used @vuets/class and TSX;
+```shell
 npm i @vuets/class
 ```
 
-
-# Usage
-
-### From vue-class-component usage
-
-Example
-```ts
-import { Component, Vue  } from '@vuets/class'
-@Component
-export default class extends Vue {
-  private render() {
-      return (
-          <div>
-              <Test />
-          </div>
-      )
-  }
-}
-```
-
-### If you need type hints
-
-Example TSX
+## Vuex code
 
 ```ts
-interface PropTypes {
-  title?: string;
-  mode: 1 | 2 | 3;
+import Vue from 'vue';
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+
+interface UserState  {
+    name: string
 }
 
-import { Component, Vue  } from '@vuets/class'
-@Component
-export default class extends Vue<PropTypes> {
-  private render() {
-      return (
-          <div>
-              <Test />
-          </div>
-      )
-  }
+interface RootState {
+    username: string;
 }
-```
 
-Example TS
-
-```ts
-interface PropTypes {
-  title?: string;
-  mode: 1 | 2 | 3;
-}
-import { Component, Vue  } from '@vuets/class'
-@Component({
-  template: require('./any.html')
-})
-export default class extends Vue<PropTypes> {}
-```
-
-> If you use webpack, maybe need `raw-loader` handler html file
-
-### Decorators
-
-See [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator), Similar vue-property-decorator, Api Please see [index.d.ts](https://github.com/ranyunlong/vuets/blob/class/types/index.d.ts)
-
-
-**1. @Props(propType?: PropOptions)**
-
-> vue props option:
-```ts
-{
-    props: {
-      size: {
-          type: Number,
-          default: 100
-      },
-      type: Number,
-      age: {
-        type: Number,
-        required: true
-      },
-      title: {
-        type: String,
-        validator: (value) => typeof value === 'string'
-      }
-    }
-}
-```
-
-> For typescript:
-
-Example
-```ts
-import { Vue, Prop } from '@vuets/class'
-export default class extends Vue<PropTypes>{
-  @Prop({type: Number, default:100}) size!:number;
-  @Prop(Number) type!:number;
-  @Prop({type: Number, required:true}) age!:number;
-  @Prop({ type: String, validator: (value) => typeof value === 'string' }) public title!: string;
-}
-```
-
-**2. @Model(event?: string | undefined, propType?: PropOptions)**
-
-> vue props option:
-```ts
-props: {
-  checked: {
-    type: Boolean
-  },
-  model: {
-    prop: 'checked',
-    event: 'change'
-  }
-}
-```
-
-> For typescript:
-
-Example
-```ts
-import { Vue, Model } from '@vuets/class'
-export default class extends Vue<PropTypes>{
-  @Model('change',String) checked!: string;
-}
-```
-
-**3. @Watch(watchKey: string, option?: WatchOptions | undefined)**
-> vue props option:
-
-```ts
-{
-  watch: {
-    a(n: boolean, o: boolean){
-       console.log(n)
+export default new Vuex.Store({
+    state: {
+        username: 'Danny'
     },
-    b: {
-      handler: (n: object, o: object)=> console.log(n),
-      deep: true
+    getters: {
+      	username: (state: RootState) => state.username
+    },
+    mutations: {
+        changeUsername: (state: RootState, param: string) => {
+            state.username = param
+        }
+    },
+    actions: {
+        ACTION_CHANGE_USERNAME: ({commit}, param: string) => {
+            commit('changeUsername', param)
+        }
+    },
+    modules: {
+        admin: {
+            namespaced: true,
+            state: {
+                name: 'Jobs'
+            },
+            getters: {
+                name: (state: UserState): string => state.name
+            },
+            mutations: {
+                changeName: (state: UserState, param: string): void => {
+                    state.name = param
+                }
+            },
+            actions: {
+                ACTION_CHANGE_NAME: ({ commit }, param: string) => {
+                    commit('changeName', param)
+                }
+            }
+        }
     }
-  }
-}
+})
 ```
 
+## Decorators
 
->  For typescript:
+### 1. @State(key: string):VuexDecorators;
 
-Example
-```ts
-import { Vue, Watch } from '@vuets/class'
-export default class extends Vue<PropTypes>{
-  public a:boolean = false;
-  public b:object = {}
-  @Watch('a')
-  aWatching(n: boolean, o: boolean):void {
-    console.log(n)
-  }
-  @Watch('b', { deep:true })
-  bWatching(n: object, o: object):void {
-    console.log(n)
-  }
-}
-```
-
-**4. @Emit(event: string)**
-> vue props option: 
-
+Vue options Example
 ```ts
 {
-  methods: {
-    run(n: number){
-      this.$emit('click', n)
+  computed:{
+    myUser() {
+      return this.$store.state.username
     }
   }
 }
 ```
 
->  For typescript:
+@State('username') === computed:{ myUser() { return this.$store.state.username } }
 
-Example
+
+Ts Example
 ```ts
- import { Vue, Emit } from '@vuets/class'
- export default class extends Vue<PropTypes>{
-    @Emit('click')
-    run(n: number) {}
-}
-```
-
-**5. @Provide(propertyKey?: string | symbol | undefined)**
-> vue props option: 
-
-```ts
-{
-  data(){
-    return {
-      title: 'Im title',
-      test: 'Im test'
-    }
-  },
-  provide:{
-    title: this.title,
-    foo: this.test
+import { Component, Vue, Prop  } from '@vuets/class'
+import { State, NameSpace } from '@vuets/vuex';
+const adminModule = NameSpace('admin')
+export class Card extends Vue {
+  @State('username') public myUser!: string;
+  @adminModule.State('name') myAdmin!: string;
+  private render() {
+     <div>
+       {this.myUser}
+       {this.myAdmin}
+     </div>
   }
 }
 ```
->  For typescript:
 
-Example
+### 2. @Getter(key: string):VuexDecorators;
 ```ts
-import { Vue, Provide } from '@vuets/class'
-export default class extends Vue<PropTypes>{
-  @Provide() title:string = 'Im title';
-  @Provide('test') test:string = 'Im test'
-}
-```
-
-**6. Inject(options?: string | symbol | InjectOptions | undefined)**
-> vue props option: 
-```ts
-{
-  inject:{
-    title: 'title'
-    test:{
-      from: 'foo',
-      default: 'test data'
-    }
-  },
-  template: `<h1>{{title}} {{this.test}}</h1>`
-}
-```
->  For typescript:
-
-Example
-```ts
-import { Vue, Provide } from '@vuets/class'
-export default class extends Vue<PropTypes>{
-  @Inject() title!: string;
-  @Inject({ from:'foo', default: 'test data' }) test!: string;
-  render() {
-  	return(
-    	<h1>{this.title} {this.test}</h1>
-    )    
+import { Component, Vue, Prop  } from '@vuets/class'
+import { Getter, NameSpace } from '@vuets/vuex';
+const adminModule = NameSpace('admin')
+export class Card extends Vue {
+  @Getter('username') public myUser!: string;
+  @adminModule.Getter('name') myAdmin!: string;
+  private render() {
+     <div>
+       {this.myUser}
+       {this.myAdmin}
+     </div>
   }
 }
-
 ```
 
+### 3. @Mutation(key: string):VuexDecorators;
+```ts
+import { Component, Vue, Prop  } from '@vuets/class'
+import { Mutation, NameSpace } from '@vuets/vuex';
+const adminModule = NameSpace('admin')
+export class Card extends Vue {
+  @Getter('username') public myUser!: string;
+  @Mutation('changeUsername') public usernameChange!: Function;
+  @adminModule.Getter('name') myAdmin!: string;
+  @adminModule.Mutation('changeName') public adminChange!: Function;
+  private render() {
+      <div>
+          {this.myUser}
+          {this.myAdmin}
+          <button onClick={this.usernameChange('John')}>change username</button>
+          <button onClick={this.adminChange('root')}>change admin</button>
+      </div>
+  }
+}
+```
+
+### 4. @Action(key: string):VuexDecorators;
+```ts
+import { Component, Vue, Prop  } from '@vuets/class'
+import { Mutation, NameSpace } from '@vuets/vuex';
+const adminModule = NameSpace('admin')
+export class Card extends Vue {
+  @Getter('username') public myUser!: string;
+  @Action('ACTION_CHANGE_USERNAME') public usernameChange!: Function;
+  @adminModule.Getter('name') myAdmin!: string;
+  @adminModule.Action('ACTION_CHANGE_NAME') public adminChange!: Function;
+  private render() {
+      <div>
+          {this.myUser}
+          {this.myAdmin}
+          <button onClick={this.usernameChange('John')}>change username</button>
+          <button onClick={this.adminChange('root')}>change admin</button>
+      </div>
+  }
+}
+```
 
 
 # License 
 
 MIT License
-
