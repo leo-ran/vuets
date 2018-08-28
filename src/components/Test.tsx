@@ -14,6 +14,7 @@ export default class extends Vue {
                 {this.title}
                 <br/>
                 {this.title2}
+                <slot></slot>
             </div>
         )
     }

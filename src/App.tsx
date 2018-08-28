@@ -1,12 +1,14 @@
 import { Component, Vue  } from '@vuets/class'
-import { Card } from '@/components/Card';
+import { Button } from '@/components/Button'
 
 @Component
 export default class extends Vue {
     private render() {
         return (
             <div>
-                <Card title="标题" onClick={ () => { console.log(1) }} />
+                <Button type="danger">
+                    xx
+                </Button>
             </div>
         )
     }
