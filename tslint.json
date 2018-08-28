@@ -38,6 +38,7 @@
     "callable-types":false,
     "only-arrow-functions":false,
     "no-console":false,
-    "max-line-length":false
+    "max-line-length":false,
+    "unified-signatures":false
   }
 }

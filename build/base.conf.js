@@ -32,6 +32,10 @@ const renderer = {
                 use: 'babel-loader'
             },
             {
+                test: /\.html$/,
+                use: 'raw-loader'
+            },
+            {
                 test: /\.tsx$/,
                 exclude: /node_modules/,
                 include: path.resolve('src'),
