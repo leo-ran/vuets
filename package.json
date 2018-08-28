@@ -1,6 +1,6 @@
 {
   "name": "@vuets/vuex",
-  "version": "1.1.0-beta.1",
+  "version": "1.1.0-rc1",
   "description": "typescript vue classes",
   "main": "dist/index.js",
   "typings": "types/index.d.ts",
@@ -8,11 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "vue-typescript",
-    "typescript-vue",
-    "vue-ts",
-    "vue-jsx",
-    "vue-tsx"
+    "vuex-ts",
+    "vuex",
+    "vue-tsx-vuex"
   ],
   "author": "ranyunlong",
   "license": "MIT",
@@ -24,7 +22,7 @@
   },
   "repository": {
     "type": "github",
-    "url": "https://github.com/ranyunlong/vuets/tree/class"
+    "url": "https://github.com/ranyunlong/vuets/tree/vuex"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
