@@ -100,7 +100,7 @@ export declare const Component: typeof ComponentDecorator;
  * ```
  */
 declare class VueComponentClass<T = any> extends VueClass {
-    private readonly propTypes: T;
+    private readonly propTypes: Readonly<T>;
  }
 export declare const Vue: typeof VueComponentClass;
 export { VueClass };
