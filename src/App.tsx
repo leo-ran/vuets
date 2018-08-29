@@ -6,7 +6,7 @@ export default class extends Vue {
     private render() {
         return (
             <div>
-                <Button type="danger">
+                <Button type="success">
                     xx
                 </Button>
             </div>
