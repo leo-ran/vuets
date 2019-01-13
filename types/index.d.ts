@@ -13,10 +13,6 @@ declare class VuePropTypes<T> {
 
 export interface Vue<PropTypes> extends VueConstructor, VuePropTypes<PropTypes> {}
 
-export default Vue;
-
-export as namespace Vue;
-
 export {
     CreateElement,
     Vue as VueEntity

@@ -4,6 +4,5 @@
  * Released under the MIT License.
  */
 
-import Vue from 'vue'
-export * from 'vue-property-decorator'
-export default Vue
+import VueClass from 'vue'
+export const Vue = VueClass
