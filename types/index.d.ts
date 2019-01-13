@@ -6,10 +6,29 @@
 
 import './jsx'
 import './shims-vue'
-import VueConstructor from 'vue'
+import VueConstructor, { CreateElement, RenderContext, VNode } from 'vue'
+import { NavigationGuard } from 'vue-router'
 
 export declare class Vue<PropTypes = any> extends VueConstructor {
     readonly $props: PropTypes;
+    public render?(createElement?: CreateElement, hack?: RenderContext<PropTypes>): VNode;
+    public renderError?(createElement?: CreateElement, err?: Error): VNode;
+
+    public beforeRouteEnter?: NavigationGuard<VueConstructor>;
+    public beforeRouteLeave?: NavigationGuard<VueConstructor>;
+    public beforeRouteUpdate?: NavigationGuard<VueConstructor>;
+
+    public beforeCreate?(this: VueConstructor): void;
+    public created?(): void;
+    public beforeDestroy?(): void;
+    public destroyed?(): void;
+    public beforeMount?(): void;
+    public mounted?(): void;
+    public beforeUpdate?(): void;
+    public updated?(): void;
+    public activated?(): void;
+    public deactivated?(): void;
+    public errorCaptured?(err: Error, vm: VueConstructor, info: string): boolean | void;
 }
 
 export { 
