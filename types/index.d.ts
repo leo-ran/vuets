@@ -50,5 +50,3 @@ export {
     VNodeData,
     VNodeDirective
 } from "vue/types/vnode";
-
-export * from 'vue-property-decorator'
