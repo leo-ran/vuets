@@ -8,7 +8,7 @@ import './jsx'
 import './shims-vue'
 import VueConstructor from 'vue'
 
-export declare class Vue<PropTypes> extends VueConstructor {
+export declare class Vue<PropTypes = any> extends VueConstructor {
     readonly $props: PropTypes;
 }
 
