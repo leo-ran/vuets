@@ -5,18 +5,15 @@
  */
 
 import { VueConstructor } from 'vue'
-import { Vue as VueEntity } from 'vue/types/vue' 
 
 declare class VuePropTypes<T> {
     private readonly $props: T;
 }
 
-export interface Vue<PropTypes> extends VueConstructor, VuePropTypes<PropTypes> {}
+export interface VueTypescriptConstructor<PropTypes> extends VueConstructor, VuePropTypes<PropTypes>{}
+export const Vue: VueTypescriptConstructor<any>;
 
-export {
-    CreateElement,
-    Vue as VueEntity
-} from 'vue/types/vue';
+export { CreateElement } from 'vue/types/vue';
 
 export {
     Component,
@@ -46,3 +43,7 @@ export {
     VNodeData,
     VNodeDirective
 } from "vue/types/vnode";
+
+export default Vue;
+
+export as namespace Vue;

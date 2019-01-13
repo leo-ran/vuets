@@ -6,3 +6,4 @@
 
 import VueClass from 'vue'
 export const Vue = VueClass
+export default Vue
