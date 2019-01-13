@@ -66,7 +66,7 @@ declare global {
             [elemName: string]: any;
         }
         interface ElementAttributesProperty {
-            propTypes: any;
+            $props: any;
         }
     }
 }
