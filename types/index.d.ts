@@ -6,17 +6,16 @@
 
 import './jsx'
 import './shims-vue'
-import { VueConstructor } from 'vue'
+import VueConstructor from 'vue'
 
-
-declare class VuePropTypes<T> {
-    private readonly $props: T;
+export declare class Vue<PropTypes> extends VueConstructor {
+    readonly $props: PropTypes;
 }
 
-export interface VueTypescriptConstructor<PropTypes> extends VueConstructor, VuePropTypes<PropTypes>{}
-export const Vue: VueTypescriptConstructor<any>;
-
-export { CreateElement } from 'vue/types/vue';
+export { 
+    CreateElement, 
+    VueConstructor
+} from 'vue/types/vue';
 
 export {
     Component,
