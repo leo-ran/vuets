@@ -12,7 +12,7 @@ This library fully depends on [vue-class-component](https://github.com/vuejs/vue
 # install
 
 ```shell
-npm i @vuets/class
+npm i @vuets/class vue vue-class-component vue-property-decorator
 ```
 
 
@@ -22,7 +22,8 @@ npm i @vuets/class
 
 Example
 ```ts
-import { Component, Vue  } from '@vuets/class'
+import Vue from '@vuets/class'
+import { Component } from 'vue-property-decorator'
 @Component
 export default class extends Vue {
   private render() {
@@ -45,7 +46,8 @@ interface PropTypes {
   mode: 1 | 2 | 3;
 }
 
-import { Component, Vue  } from '@vuets/class'
+import Vue from '@vuets/class'
+import { Component } from 'vue-property-decorator'
 @Component
 export default class extends Vue<PropTypes> {
   private render() {
@@ -61,11 +63,14 @@ export default class extends Vue<PropTypes> {
 Example TS
 
 ```ts
+import Vue from '@vuets/class'
+import { Component } from 'vue-property-decorator'
+
 interface PropTypes {
   title?: string;
   mode: 1 | 2 | 3;
 }
-import { Component, Vue  } from '@vuets/class'
+
 @Component({
   template: require('./any.html')
 })
@@ -106,7 +111,10 @@ See [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator
 
 Example
 ```ts
-import { Vue, Prop } from '@vuets/class'
+import Vue from '@vuets/class'
+import { Component, Prop } from 'vue-property-decorator'
+
+@Component
 export default class extends Vue<PropTypes>{
   @Prop({type: Number, default:100}) size!:number;
   @Prop(Number) type!:number;
@@ -134,7 +142,10 @@ props: {
 
 Example
 ```ts
-import { Vue, Model } from '@vuets/class'
+import Vue from '@vuets/class'
+import { Component, Model } from 'vue-property-decorator'
+
+@Component
 export default class extends Vue<PropTypes>{
   @Model('change',String) checked!: string;
 }
@@ -162,7 +173,10 @@ export default class extends Vue<PropTypes>{
 
 Example
 ```ts
-import { Vue, Watch } from '@vuets/class'
+import Vue from '@vuets/class'
+import { Component, Watch } from 'vue-property-decorator'
+
+@Component
 export default class extends Vue<PropTypes>{
   public a:boolean = false;
   public b:object = {}
@@ -194,8 +208,10 @@ export default class extends Vue<PropTypes>{
 
 Example
 ```ts
- import { Vue, Emit } from '@vuets/class'
- export default class extends Vue<PropTypes>{
+import Vue from '@vuets/class'
+import { Component, Emit } from 'vue-property-decorator'
+
+export default class extends Vue<PropTypes>{
     @Emit('click')
     run(n: number) {}
 }
@@ -222,7 +238,9 @@ Example
 
 Example
 ```ts
-import { Vue, Provide } from '@vuets/class'
+import Vue from '@vuets/class'
+import { Component, Provide } from 'vue-property-decorator'
+
 export default class extends Vue<PropTypes>{
   @Provide() title:string = 'Im title';
   @Provide('test') test:string = 'Im test'
@@ -247,7 +265,9 @@ export default class extends Vue<PropTypes>{
 
 Example
 ```ts
-import { Vue, Provide } from '@vuets/class'
+import Vue from '@vuets/class'
+import { Component, Inject } from 'vue-property-decorator'
+
 export default class extends Vue<PropTypes>{
   @Inject() title!: string;
   @Inject({ from:'foo', default: 'test data' }) test!: string;
