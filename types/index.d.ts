@@ -4,7 +4,10 @@
  * Released under the MIT License.
  */
 
+import './jsx'
+import './shims-vue'
 import { VueConstructor } from 'vue'
+
 
 declare class VuePropTypes<T> {
     private readonly $props: T;
